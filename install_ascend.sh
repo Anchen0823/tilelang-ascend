@@ -52,14 +52,15 @@ echo "Coverage enabled: $ENABLE_COVERAGE"
 
 # Step 1: Install Python requirements
 echo "Installing Python requirements from requirements.txt..."
-pip install -r requirements-build.txt
-pip install -r requirements.txt
-if [ $? -ne 0 ]; then
+if ! pip install -r requirements-build.txt; then
+    echo "Error: Failed to install Python build requirements." >&2
+    exit 1
+fi
+if ! pip install -r requirements.txt; then
     echo "Error: Failed to install Python requirements."
     exit 1
-else
-    echo "Python requirements installed successfully."
 fi
+echo "Python requirements installed successfully."
 
 # Check and install lcov if coverage enabled
 if $ENABLE_COVERAGE; then
